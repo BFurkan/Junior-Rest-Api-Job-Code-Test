@@ -57,7 +57,3 @@ def calculate_average(stdNumber):
         average_grades[course_code] = round(sum(values) / len(values), 2)
 
     return jsonify(average_grades), 200
-
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
