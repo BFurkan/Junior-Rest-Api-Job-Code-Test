@@ -1,28 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.exc import IntegrityError
+from models import Student, Grade
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-class Student(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    surname = db.Column(db.String(100), nullable=False)
-    stdNumber = db.Column(db.String(20), unique=True, nullable=False)
-
-class Grade(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('student_id') nullable=False)
-    course_code = db.Column(db.String(10), nullable=False)
-    value = db.Column(db.Integer, nullable=False)
-
-    student = db.relationship('Student', backref=db.backref('grades', lazy=True))
-
-
-@app.route('/api/students', methods=['POST'])
+@app.route('/api/students', methods=['POST'])  #Create students by their Name, Surname, Student Number and Grade
 def create_student():
     data = request.json
     name = data.get('name')
@@ -48,16 +33,16 @@ def create_student():
         db.session.commit()
 
         return jsonify({'message': 'Student created successfully'}), 201
-    except IntegrityError:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'error': 'Student number already exists'}), 400
+        return jsonify({'error': str(e)}), 500
     
-@app.route('api/calculate-average/<stdNumber>', methods=['GET'])
+@app.route('/api/calculate-average/<stdNumber>', methods=['GET']) # GET for average calculation for multiple grades
 def calculate_average(stdNumber):
     student = Student.query.filter_by(stdNumber=stdNumber).first()
     if not student:
         return jsonify({'error': 'Student not found'}), 404
-    grades = Grade.query.filter_by(student_id=student_id).all()
+    grades = Grade.query.filter_by(student_id=student.id).all()
     if not grades:
         return jsonify({'message': 'No grades found for this student'})
     

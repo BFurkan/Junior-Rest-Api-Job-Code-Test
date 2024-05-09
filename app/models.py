@@ -12,4 +12,4 @@ class Grade(db.Model):
     course_code = db.Column(db.String(10), nullable=False)
     value = db.Column(db.Integer, nullable=False)
 
-    student = db.relationship('Student', backref=db.backref('grades', lazy=True))
+    student = db.relationship('Student')
