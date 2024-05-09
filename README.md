@@ -17,3 +17,23 @@ Run the Flask application
   python run.py
   
 The API should now be accessible at http://localhost:5000.
+
+Test Case on Postman
+
+  {
+  "name": "Arthur",
+  "surname": "Brown",
+  "std_number": "34578",
+  "grades": [
+    {
+      "code": "MT101",
+      "value": 95
+    },
+    {
+      "code": "HS101",
+      "value": 90
+    }
+  ]
+}
+
+
