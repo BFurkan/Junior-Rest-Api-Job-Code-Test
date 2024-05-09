@@ -1,25 +1,20 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from models import Student, Grade
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+from flask import request, jsonify
+from app.models import Student, Grade
+from app import app,db
 
 @app.route('/api/students', methods=['POST'])  #Create students by their Name, Surname, Student Number and Grade
 def create_student():
     data = request.json
     name = data.get('name')
     surname = data.get('surname')
-    stdNumber = data.get('stdNumber')
+    std_number = data.get('std_number')
     grades = data.get('grades')
 
-    if not all([name, surname, stdNumber, grades]):
+    if not all([name, surname, std_number, grades]):
         return jsonify({'error': 'Missing required fields'}), 400
 
     try:
-        student = Student(name=name, surname=surname, stdNumber=stdNumber)
+        student = Student(name=name, surname=surname, std_number=std_number)
         db.session.add(student)
         db.session.commit()
 
@@ -46,7 +41,7 @@ def calculate_average(stdNumber):
     if not grades:
         return jsonify({'message': 'No grades found for this student'})
     
-    average_grades = {}
+    average_grades = {} 
     for grade in grades:
         if grade.course_code not in average_grades:
             average_grades[grade.course_code] = [grade.value]

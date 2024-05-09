@@ -13,3 +13,4 @@ class Grade(db.Model):
     value = db.Column(db.Integer, nullable=False)
 
     student = db.relationship('Student')
+
