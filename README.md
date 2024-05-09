@@ -9,5 +9,11 @@ To run the API locally, follow these steps:
 Clone this repository
 Navigate to the project directory
 Install the required dependencies
+
+  pip install flask
+  pip install flask_sqlalchemy
+  
 Run the Flask application
+  python run.py
+  
 The API should now be accessible at http://localhost:5000.
