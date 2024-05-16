@@ -1,4 +1,4 @@
-#Junior Dev Assignment
+# Junior Dev Assignment
 Features
 Create new students with their names, surnames, student numbers, and corresponding grades.
 Store student data in a database.
