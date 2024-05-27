@@ -32,9 +32,9 @@ def create_student():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
     
-@app.route('/api/calculate-average/<stdNumber>', methods=['GET']) # GET for average calculation for multiple grades
-def calculate_average(stdNumber):
-    student = Student.query.filter_by(stdNumber=stdNumber).first()
+@app.route('/api/calculate-average/<std_number>', methods=['GET']) # GET for average calculation for multiple grades
+def calculate_average(std_number):
+    student = Student.query.filter_by(std_number=std_number).first()
     if not student:
         return jsonify({'error': 'Student not found'}), 404
     grades = Grade.query.filter_by(student_id=student.id).all()
